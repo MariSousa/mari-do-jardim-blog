@@ -1,4 +1,4 @@
-import { useParams, Navigate, Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useMemo } from 'react'
 import useArticlesStore from '@/stores/use-articles-store'
 import { Badge } from '@/components/ui/badge'
@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useScrollProgress } from '@/hooks/use-scroll-progress'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { ScienceBox } from '@/components/ScienceBox'
-import { ArrowLeft, Sun, Gauge } from 'lucide-react'
+import { ArrowLeft, Sun, Gauge, Leaf } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { markdownToHtml } from '@/lib/markdown'
 import mascotImg from '@/assets/chatgptimage6demar.de2026091019-removebg-preview-f3520.png'
@@ -18,12 +18,16 @@ export default function ArticlePage() {
   const { articles, loading } = useArticlesStore()
 
   const article = articles.find((a) => a.slug === slug)
-  const relatedArticles = articles.filter((a) => a.id !== article?.id).slice(0, 3)
 
   const contentHtml = useMemo(() => {
     if (!article?.content) return ''
     return markdownToHtml(article.content)
   }, [article?.content])
+
+  const relatedArticles = useMemo(() => {
+    if (!article) return []
+    return articles.filter((a) => a.id !== article.id).slice(0, 3)
+  }, [articles, article?.id])
 
   if (loading) {
     return (
@@ -39,7 +43,28 @@ export default function ArticlePage() {
     )
   }
 
-  if (!article) return <Navigate to="/404" />
+  if (!article && !loading) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center bg-background text-foreground px-4">
+        <div className="text-center max-w-md">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6 mx-auto">
+            <Leaf className="w-10 h-10 text-primary" />
+          </div>
+          <h1 className="text-4xl font-black text-primary mb-4">Post não encontrado</h1>
+          <p className="text-muted-foreground mb-8">
+            O artigo que você procura não existe ou foi removido.
+          </p>
+          <Link to="/">
+            <Button size="lg" className="bg-primary font-bold w-full sm:w-auto">
+              Voltar para o Início
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!article) return null
 
   return (
     <div className="bg-background relative">
