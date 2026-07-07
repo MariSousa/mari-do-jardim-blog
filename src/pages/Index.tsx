@@ -19,7 +19,7 @@ export default function Index() {
   return (
     <div className="pb-24">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pb-32">
         <div className="absolute inset-0 z-0">
           <img
             src="https://img.usecurling.com/p/1600/900?q=lush%20indoor%20garden"
@@ -29,7 +29,7 @@ export default function Index() {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
         </div>
 
-        <div className="container relative z-10 mx-auto px-4 mt-20 text-center animate-fade-in-up">
+        <div className="container relative z-30 mx-auto px-4 text-center animate-fade-in-up">
           <Badge className="mb-6 bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 text-sm px-4 py-1.5 font-medium">
             <Leaf className="w-4 h-4 mr-2" /> O Blog de Jardinagem Científica
           </Badge>
@@ -52,7 +52,7 @@ export default function Index() {
       </section>
 
       {/* Category Explorer */}
-      <section className="container mx-auto px-4 -mt-16 relative z-20">
+      <section className="container mx-auto px-4 -mt-16 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {CATEGORIES.map((cat, i) => (
             <Link key={cat.name} to={`/categorias?filter=${cat.name}`}>
