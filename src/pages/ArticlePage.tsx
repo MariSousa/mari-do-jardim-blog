@@ -1,5 +1,5 @@
 import { useParams, Navigate, Link } from 'react-router-dom'
-import { ARTICLES } from '@/data/mock'
+import useArticlesStore from '@/stores/use-articles-store'
 import { Badge } from '@/components/ui/badge'
 import { useScrollProgress } from '@/hooks/use-scroll-progress'
 import { useIsMobile } from '@/hooks/use-mobile'
@@ -11,6 +11,7 @@ export default function ArticlePage() {
   const { slug } = useParams()
   const isMobile = useIsMobile()
   const progress = useScrollProgress()
+  const { articles: ARTICLES } = useArticlesStore()
 
   const article = ARTICLES.find((a) => a.slug === slug)
   const relatedArticles = ARTICLES.filter((a) => a.id !== article?.id).slice(0, 3)

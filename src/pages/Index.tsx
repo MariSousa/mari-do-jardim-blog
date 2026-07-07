@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ARTICLES } from '@/data/mock'
+import useArticlesStore from '@/stores/use-articles-store'
 import { ArticleCard } from '@/components/ArticleCard'
 import { Button } from '@/components/ui/button'
 import { Droplets, Leaf, Sun, Bug, ChevronRight } from 'lucide-react'
@@ -12,6 +12,7 @@ const CATEGORIES = [
 ]
 
 export default function Index() {
+  const { articles: ARTICLES } = useArticlesStore()
   const featuredArticle = ARTICLES[0]
   const recentArticles = ARTICLES.slice(1, 4)
 

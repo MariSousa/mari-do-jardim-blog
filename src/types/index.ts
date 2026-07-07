@@ -1,3 +1,4 @@
+export type ArticleStatus = 'Published' | 'Draft'
 export type Difficulty = 'Fácil' | 'Médio' | 'Difícil'
 export type LightLevel = 'Sombra' | 'Meia Sombra' | 'Luz Indireta' | 'Sol Pleno'
 export type Category =
@@ -18,4 +19,6 @@ export interface Article {
   scienceFact: string
   practiceTip: string
   content: string[]
+  status?: ArticleStatus
+  publishedAt?: string
 }
