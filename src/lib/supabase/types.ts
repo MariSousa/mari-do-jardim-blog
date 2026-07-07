@@ -9,7 +9,60 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      posts: {
+        Row: {
+          author_id: string | null
+          category: string
+          content: string
+          created_at: string
+          difficulty: string | null
+          excerpt: string | null
+          id: string
+          image_url: string | null
+          light: string | null
+          practice_tip: string | null
+          published_at: string | null
+          science_fact: string | null
+          slug: string
+          status: string | null
+          title: string
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string
+          content: string
+          created_at?: string
+          difficulty?: string | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          light?: string | null
+          practice_tip?: string | null
+          published_at?: string | null
+          science_fact?: string | null
+          slug: string
+          status?: string | null
+          title: string
+        }
+        Update: {
+          author_id?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          difficulty?: string | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          light?: string | null
+          practice_tip?: string | null
+          published_at?: string | null
+          science_fact?: string | null
+          slug?: string
+          status?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
