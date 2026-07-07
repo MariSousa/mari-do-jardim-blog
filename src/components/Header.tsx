@@ -17,7 +17,6 @@ export function Header() {
     { name: 'Início', path: '/' },
     { name: 'Categorias', path: '/categorias' },
     { name: 'Ciência vs. Prática', path: '/categorias?filter=science' },
-    { name: 'Painel Admin', path: '/admin' },
   ]
 
   return (
