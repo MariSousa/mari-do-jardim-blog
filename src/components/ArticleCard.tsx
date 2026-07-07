@@ -55,13 +55,13 @@ export function ArticleCard({ article, index = 0, featured = false }: ArticleCar
               <div className="flex items-start gap-2 mb-2">
                 <Beaker className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
                 <span className="font-semibold text-foreground/80 line-clamp-1">
-                  Ciência: {article.scienceFact}
+                  A Ciência por Trás: {article.scienceFact}
                 </span>
               </div>
               <div className="flex items-start gap-2">
                 <Sprout className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" />
                 <span className="font-semibold text-foreground/80 line-clamp-1">
-                  Prática: {article.practiceTip}
+                  Dicas Práticas: {article.practiceTip}
                 </span>
               </div>
             </div>

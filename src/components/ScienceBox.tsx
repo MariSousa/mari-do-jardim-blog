@@ -31,12 +31,14 @@ export function ScienceBox({ science, practice, isMobile = false }: ScienceBoxPr
           <AccordionContent className="px-4 pb-4">
             <div className="space-y-4 pt-2">
               <div>
-                <h4 className="font-bold text-primary flex items-center gap-2 mb-1">A Ciência</h4>
+                <h4 className="font-bold text-primary flex items-center gap-2 mb-1">
+                  A Ciência por Trás
+                </h4>
                 <p className="text-foreground/90 text-sm leading-relaxed">{science}</p>
               </div>
               <div className="border-t border-white/5 pt-4">
                 <h4 className="font-bold text-emerald-400 flex items-center gap-2 mb-1">
-                  <Sprout className="w-4 h-4" /> A Prática
+                  <Sprout className="w-4 h-4" /> Dicas Práticas
                 </h4>
                 <p className="text-foreground/90 text-sm leading-relaxed font-medium">{practice}</p>
               </div>
@@ -58,7 +60,7 @@ export function ScienceBox({ science, practice, isMobile = false }: ScienceBoxPr
       <CardContent className="p-6 space-y-6">
         <div>
           <h4 className="font-bold text-primary mb-2 uppercase text-sm tracking-wider">
-            A Ciência
+            A Ciência por Trás
           </h4>
           <p className="text-foreground/90 leading-relaxed text-sm">{science}</p>
         </div>
@@ -66,7 +68,7 @@ export function ScienceBox({ science, practice, isMobile = false }: ScienceBoxPr
           <div className="absolute left-0 top-0 w-1 h-full bg-emerald-500 rounded-full" />
           <div className="pl-4">
             <h4 className="font-bold text-emerald-400 mb-2 uppercase text-sm tracking-wider flex items-center gap-2">
-              <Sprout className="w-4 h-4" /> Como Fazer
+              <Sprout className="w-4 h-4" /> Dicas Práticas
             </h4>
             <p className="text-foreground font-medium leading-relaxed">{practice}</p>
           </div>

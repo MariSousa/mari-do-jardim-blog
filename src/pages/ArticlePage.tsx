@@ -6,6 +6,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import { ScienceBox } from '@/components/ScienceBox'
 import { ArrowLeft, Clock, Sun, Gauge } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import mascotImg from '@/assets/chatgptimage6demar.de2026091019-removebg-preview-f3520.png'
 
 export default function ArticlePage() {
   const { slug } = useParams()
@@ -89,8 +90,8 @@ export default function ArticlePage() {
             <div className="bg-primary/5 rounded-2xl p-8 border border-primary/20 mt-12 mb-16">
               <h3 className="font-heading font-bold text-xl flex items-center gap-2 mb-4 text-foreground mt-0">
                 <img
-                  src="https://api.usecurling.com/v1/attachments/download/2893858d-d157-4300-8851-4d3baeb6380d/b19a31ed-2f22-4a00-ba53-611099fbcfe9.jpg"
-                  className="w-8 h-8 rounded-full border border-primary"
+                  src={mascotImg}
+                  className="w-8 h-8 rounded-full border border-primary object-cover bg-white"
                   alt="Mari"
                 />
                 Dica Pro da Mari

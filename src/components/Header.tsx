@@ -6,8 +6,7 @@ import { useScrollState } from '@/hooks/use-scroll-state'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-const MASCOT_URL =
-  'https://api.usecurling.com/v1/attachments/download/2893858d-d157-4300-8851-4d3baeb6380d/b19a31ed-2f22-4a00-ba53-611099fbcfe9.jpg'
+import mascotImg from '@/assets/chatgptimage6demar.de2026091019-removebg-preview-f3520.png'
 
 export function Header() {
   const isScrolled = useScrollState(20)
@@ -36,9 +35,9 @@ export function Header() {
         >
           <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary group-hover:scale-105 transition-transform duration-300">
             <img
-              src={MASCOT_URL}
+              src={mascotImg}
               alt="Mari do Jardim Mascot"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center bg-white"
             />
           </div>
           <span className="font-heading font-extrabold text-xl tracking-tight hidden sm:block">

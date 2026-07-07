@@ -150,7 +150,7 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="scienceFact">Explicação Científica *</Label>
+        <Label htmlFor="scienceFact">A Ciência por Trás (Explicação Científica) *</Label>
         <Textarea
           id="scienceFact"
           value={form.scienceFact}
