@@ -10,7 +10,11 @@ Deno.serve(async (req: Request) => {
     const { topic }: { topic: string } = await req.json()
 
     const capitalized = topic.charAt(0).toUpperCase() + topic.slice(1)
-    const slug = topic.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    const slug = topic
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
 
     const result = {
       title: `Guia Completo sobre ${capitalized}`,

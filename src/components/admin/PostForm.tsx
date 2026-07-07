@@ -179,10 +179,13 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
           id="content"
           value={form.content}
           onChange={(e) => set('content', e.target.value)}
-          rows={6}
-          placeholder="Separe parágrafos com linha em branco"
+          rows={8}
+          placeholder="Escreva em Markdown: # Título, **negrito**, *itálico*, - listas, [link](url)..."
           className="bg-background"
         />
+        <p className="text-sm text-muted-foreground">
+          Dica: Use Markdown para formatar o conteúdo. Separe parágrafos com linha em branco.
+        </p>
       </div>
 
       <div className="space-y-2">

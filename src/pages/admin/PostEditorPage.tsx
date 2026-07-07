@@ -1,96 +1,94 @@
-import { useNavigate, useParams, Link } from 'react-router-dom'
-import useArticlesStore from '@/stores/use-articles-store'
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { PostForm, type PostFormData } from '@/components/admin/PostForm'
+import useArticlesStore from '@/stores/use-articles-store'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Leaf } from 'lucide-react'
-import { toast } from 'sonner'
+import { ArrowLeft } from 'lucide-react'
 
 export default function PostEditorPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { addArticle, updateArticle, getArticle, loading } = useArticlesStore()
+  const { articles, loading, addArticle, updateArticle } = useArticlesStore()
+  const [submitting, setSubmitting] = useState(false)
+
   const isEditing = !!id
-  const existing = isEditing ? getArticle(id) : undefined
+  const article = isEditing ? articles.find((a) => a.id === id) : undefined
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-32 text-center">
-        <p className="text-xl text-muted-foreground">Carregando...</p>
-      </div>
-    )
-  }
-
-  if (isEditing && !existing) {
-    return (
-      <div className="container mx-auto px-4 py-32 text-center">
-        <p className="text-xl mb-4">Artigo não encontrado.</p>
-        <Button asChild>
-          <Link to="/admin">Voltar ao painel</Link>
-        </Button>
-      </div>
-    )
-  }
+  useEffect(() => {
+    if (isEditing && !loading && !article) {
+      navigate('/admin')
+    }
+  }, [isEditing, loading, article, navigate])
 
   const handleSubmit = async (data: PostFormData) => {
-    const contentArray = data.content.split('\n\n').filter((p) => p.trim())
+    setSubmitting(true)
     const payload = {
-      ...data,
-      content: contentArray.length > 0 ? contentArray : [data.content],
-      publishedAt: existing?.publishedAt ?? new Date().toISOString(),
+      title: data.title,
+      excerpt: data.excerpt,
+      image: data.image,
+      category: data.category,
+      difficulty: data.difficulty,
+      light: data.light,
+      scienceFact: data.scienceFact,
+      practiceTip: data.practiceTip,
+      content: data.content,
+      status: data.status,
     }
-
-    if (isEditing && existing) {
-      const success = await updateArticle(existing.id, payload)
-      if (success) {
-        toast.success('Artigo atualizado com sucesso!')
-        navigate('/admin')
-      }
+    if (isEditing && id) {
+      const success = await updateArticle(id, payload)
+      if (success) navigate('/admin')
     } else {
       const result = await addArticle(payload)
-      if (result) {
-        toast.success('Artigo criado com sucesso!')
-        navigate('/admin')
-      }
+      if (result) navigate('/admin')
     }
+    setSubmitting(false)
+  }
+
+  if (loading && isEditing) {
+    return (
+      <div className="pt-32 pb-24 container mx-auto px-4">
+        <Skeleton className="w-1/2 h-10 mb-8" />
+        <Skeleton className="w-full h-96" />
+      </div>
+    )
   }
 
   return (
-    <div className="container mx-auto px-4 py-32">
-      <div className="flex items-center gap-2 mb-2">
-        <Leaf className="w-5 h-5 text-primary" />
-        <span className="text-primary font-semibold text-sm">Painel Administrativo</span>
+    <div className="pt-32 pb-24 container mx-auto px-4">
+      <div className="mb-8">
+        <Link to="/admin">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="-ml-3 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" /> Voltar ao painel
+          </Button>
+        </Link>
+        <h1 className="text-3xl font-black mt-4">{isEditing ? 'Editar Artigo' : 'Novo Artigo'}</h1>
       </div>
-      <div className="flex items-center justify-between gap-4 mb-8">
-        <h1 className="text-4xl font-black">{isEditing ? 'Editar Artigo' : 'Novo Artigo'}</h1>
-        <Button variant="outline" asChild>
-          <Link to="/admin">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
-          </Link>
-        </Button>
-      </div>
-
-      <div className="bg-card rounded-2xl border border-border p-6 md:p-10">
-        <PostForm
-          initialData={
-            existing
-              ? {
-                  title: existing.title,
-                  excerpt: existing.excerpt,
-                  image: existing.image,
-                  category: existing.category,
-                  difficulty: existing.difficulty,
-                  light: existing.light,
-                  scienceFact: existing.scienceFact,
-                  practiceTip: existing.practiceTip,
-                  content: existing.content.join('\n\n'),
-                  status: existing.status,
-                }
-              : undefined
-          }
-          onSubmit={handleSubmit}
-          onCancel={() => navigate('/admin')}
-        />
-      </div>
+      <PostForm
+        initialData={
+          article
+            ? {
+                title: article.title,
+                excerpt: article.excerpt,
+                image: article.image,
+                category: article.category,
+                difficulty: article.difficulty,
+                light: article.light,
+                scienceFact: article.scienceFact,
+                practiceTip: article.practiceTip,
+                content: article.content,
+                status: article.status,
+              }
+            : undefined
+        }
+        onSubmit={handleSubmit}
+        onCancel={() => navigate('/admin')}
+      />
+      {submitting && <p className="text-muted-foreground text-sm mt-4">Salvando...</p>}
     </div>
   )
 }

@@ -42,7 +42,7 @@ function dbToArticle(post: DbPost): ManagedArticle {
     light: (post.light ?? 'Luz Indireta') as LightLevel,
     scienceFact: post.science_fact ?? '',
     practiceTip: post.practice_tip ?? '',
-    content: post.content ? post.content.split('\n\n') : [],
+    content: post.content ?? '',
     status: (post.status ?? 'Published') as ArticleStatus,
     publishedAt: post.published_at ?? post.created_at,
   }
@@ -55,9 +55,7 @@ function articleToDb(article: Partial<ManagedArticle>): Record<string, unknown> 
     payload.slug = slugify(article.title)
   }
   if (article.content !== undefined) {
-    payload.content = Array.isArray(article.content)
-      ? article.content.join('\n\n')
-      : article.content
+    payload.content = article.content
   }
   if (article.excerpt !== undefined) payload.excerpt = article.excerpt
   if (article.image !== undefined) payload.image_url = article.image

@@ -1,4 +1,5 @@
 import { useParams, Navigate, Link } from 'react-router-dom'
+import { useMemo } from 'react'
 import useArticlesStore from '@/stores/use-articles-store'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -7,6 +8,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import { ScienceBox } from '@/components/ScienceBox'
 import { ArrowLeft, Sun, Gauge } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { markdownToHtml } from '@/lib/markdown'
 import mascotImg from '@/assets/chatgptimage6demar.de2026091019-removebg-preview-f3520.png'
 
 export default function ArticlePage() {
@@ -17,6 +19,11 @@ export default function ArticlePage() {
 
   const article = articles.find((a) => a.slug === slug)
   const relatedArticles = articles.filter((a) => a.id !== article?.id).slice(0, 3)
+
+  const contentHtml = useMemo(() => {
+    if (!article?.content) return ''
+    return markdownToHtml(article.content)
+  }, [article?.content])
 
   if (loading) {
     return (
@@ -83,7 +90,7 @@ export default function ArticlePage() {
 
       <div className="container mx-auto px-4 py-16">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative">
-          <article className="lg:w-2/3 prose prose-invert prose-lg md:prose-xl max-w-none">
+          <article className="lg:w-2/3 max-w-none">
             {isMobile && (
               <ScienceBox
                 science={article.scienceFact}
@@ -92,11 +99,16 @@ export default function ArticlePage() {
               />
             )}
 
-            {article.content.map((paragraph, idx) => (
-              <p key={idx} className="leading-relaxed text-foreground/90 font-sans mb-8">
-                {paragraph}
+            {contentHtml ? (
+              <div
+                className="article-prose mb-12"
+                dangerouslySetInnerHTML={{ __html: contentHtml }}
+              />
+            ) : (
+              <p className="text-muted-foreground italic text-lg">
+                O conteúdo deste artigo ainda não está disponível.
               </p>
-            ))}
+            )}
 
             <div className="bg-primary/5 rounded-2xl p-8 border border-primary/20 mt-12 mb-16">
               <h3 className="font-heading font-bold text-xl flex items-center gap-2 mb-4 text-foreground mt-0">

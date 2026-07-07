@@ -18,7 +18,7 @@ export interface Article {
   light: LightLevel
   scienceFact: string
   practiceTip: string
-  content: string[]
+  content: string
   status?: ArticleStatus
   publishedAt?: string
 }
