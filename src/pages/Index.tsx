@@ -26,7 +26,8 @@ export default function Index() {
             alt="Lush indoor garden"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background via-background/70 to-background/40" />
+          <div className="absolute inset-0 bg-background/30" />
         </div>
 
         <div className="container relative z-30 mx-auto px-4 text-center animate-fade-in-up">
