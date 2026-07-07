@@ -1,10 +1,11 @@
 import { useParams, Navigate, Link } from 'react-router-dom'
 import useArticlesStore from '@/stores/use-articles-store'
 import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useScrollProgress } from '@/hooks/use-scroll-progress'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { ScienceBox } from '@/components/ScienceBox'
-import { ArrowLeft, Clock, Sun, Gauge } from 'lucide-react'
+import { ArrowLeft, Sun, Gauge } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import mascotImg from '@/assets/chatgptimage6demar.de2026091019-removebg-preview-f3520.png'
 
@@ -12,22 +13,34 @@ export default function ArticlePage() {
   const { slug } = useParams()
   const isMobile = useIsMobile()
   const progress = useScrollProgress()
-  const { articles: ARTICLES } = useArticlesStore()
+  const { articles, loading } = useArticlesStore()
 
-  const article = ARTICLES.find((a) => a.slug === slug)
-  const relatedArticles = ARTICLES.filter((a) => a.id !== article?.id).slice(0, 3)
+  const article = articles.find((a) => a.slug === slug)
+  const relatedArticles = articles.filter((a) => a.id !== article?.id).slice(0, 3)
+
+  if (loading) {
+    return (
+      <div className="pt-32 pb-24 container mx-auto px-4">
+        <Skeleton className="w-full h-[60vh] rounded-2xl mb-8" />
+        <div className="space-y-4">
+          <Skeleton className="w-3/4 h-12" />
+          <Skeleton className="w-full h-6" />
+          <Skeleton className="w-full h-6" />
+          <Skeleton className="w-2/3 h-6" />
+        </div>
+      </div>
+    )
+  }
 
   if (!article) return <Navigate to="/404" />
 
   return (
     <div className="bg-background relative">
-      {/* Scroll Progress Bar */}
       <div
         className="fixed top-0 left-0 h-1 bg-primary z-[60] transition-all duration-150 ease-out"
         style={{ width: `${progress}%` }}
       />
 
-      {/* Hero Header */}
       <div className="w-full h-[60vh] md:h-[70vh] relative">
         <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
@@ -68,10 +81,8 @@ export default function ArticlePage() {
         </div>
       </div>
 
-      {/* Content Area */}
       <div className="container mx-auto px-4 py-16">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative">
-          {/* Main Article Content */}
           <article className="lg:w-2/3 prose prose-invert prose-lg md:prose-xl max-w-none">
             {isMobile && (
               <ScienceBox
@@ -104,7 +115,6 @@ export default function ArticlePage() {
             </div>
           </article>
 
-          {/* Sticky Sidebar */}
           {!isMobile && (
             <aside className="lg:w-1/3">
               <ScienceBox science={article.scienceFact} practice={article.practiceTip} />
@@ -113,7 +123,6 @@ export default function ArticlePage() {
         </div>
       </div>
 
-      {/* Related Posts */}
       <div className="bg-card border-t border-border py-20">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-black mb-10">Continue Explorando</h2>

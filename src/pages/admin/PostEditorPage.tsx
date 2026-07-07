@@ -8,9 +8,17 @@ import { toast } from 'sonner'
 export default function PostEditorPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { addArticle, updateArticle, getArticle } = useArticlesStore()
+  const { addArticle, updateArticle, getArticle, loading } = useArticlesStore()
   const isEditing = !!id
   const existing = isEditing ? getArticle(id) : undefined
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-32 text-center">
+        <p className="text-xl text-muted-foreground">Carregando...</p>
+      </div>
+    )
+  }
 
   if (isEditing && !existing) {
     return (
@@ -23,7 +31,7 @@ export default function PostEditorPage() {
     )
   }
 
-  const handleSubmit = (data: PostFormData) => {
+  const handleSubmit = async (data: PostFormData) => {
     const contentArray = data.content.split('\n\n').filter((p) => p.trim())
     const payload = {
       ...data,
@@ -32,13 +40,18 @@ export default function PostEditorPage() {
     }
 
     if (isEditing && existing) {
-      updateArticle(existing.id, payload)
-      toast.success('Artigo atualizado com sucesso!')
+      const success = await updateArticle(existing.id, payload)
+      if (success) {
+        toast.success('Artigo atualizado com sucesso!')
+        navigate('/admin')
+      }
     } else {
-      addArticle(payload)
-      toast.success('Artigo criado com sucesso!')
+      const result = await addArticle(payload)
+      if (result) {
+        toast.success('Artigo criado com sucesso!')
+        navigate('/admin')
+      }
     }
-    navigate('/admin')
   }
 
   return (

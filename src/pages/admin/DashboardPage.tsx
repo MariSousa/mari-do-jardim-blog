@@ -24,7 +24,7 @@ const CATEGORIES: (Category | 'Todas')[] = [
 ]
 
 export default function DashboardPage() {
-  const { articles, deleteArticle } = useArticlesStore()
+  const { articles, deleteArticle, loading } = useArticlesStore()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
@@ -40,11 +40,19 @@ export default function DashboardPage() {
     })
   }, [articles, search, statusFilter, categoryFilter])
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (deleteTarget) {
-      deleteArticle(deleteTarget.id)
+      await deleteArticle(deleteTarget.id)
       setDeleteTarget(null)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-32 text-center">
+        <p className="text-xl text-muted-foreground">Carregando artigos...</p>
+      </div>
+    )
   }
 
   return (

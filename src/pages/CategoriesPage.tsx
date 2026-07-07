@@ -1,22 +1,24 @@
 import { useState, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ARTICLES } from '@/data/mock'
+import useArticlesStore from '@/stores/use-articles-store'
 import { ArticleCard } from '@/components/ArticleCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Badge } from '@/components/ui/badge'
 
 export default function CategoriesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const { articles, loading } = useArticlesStore()
   const initialFilter = searchParams.get('filter') || ''
 
   const [searchQuery, setSearchQuery] = useState('')
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all')
 
   const filteredArticles = useMemo(() => {
-    return ARTICLES.filter((article) => {
+    return articles.filter((article) => {
       const matchesSearch =
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -32,7 +34,7 @@ export default function CategoriesPage() {
 
       return matchesSearch && matchesUrlFilter && matchesDifficulty
     })
-  }, [searchQuery, initialFilter, difficultyFilter])
+  }, [articles, searchQuery, initialFilter, difficultyFilter])
 
   return (
     <div className="pt-32 pb-24 container mx-auto px-4 min-h-screen">
@@ -99,7 +101,13 @@ export default function CategoriesPage() {
         </div>
       )}
 
-      {filteredArticles.length > 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <Skeleton key={i} className="w-full h-96 rounded-2xl" />
+          ))}
+        </div>
+      ) : filteredArticles.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredArticles.map((article, i) => (
             <div

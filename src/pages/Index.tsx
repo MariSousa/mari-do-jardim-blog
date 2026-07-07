@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import useArticlesStore from '@/stores/use-articles-store'
 import { ArticleCard } from '@/components/ArticleCard'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Droplets, Leaf, Sun, Bug, ChevronRight } from 'lucide-react'
 
 const CATEGORIES = [
@@ -12,13 +14,12 @@ const CATEGORIES = [
 ]
 
 export default function Index() {
-  const { articles: ARTICLES } = useArticlesStore()
-  const featuredArticle = ARTICLES[0]
-  const recentArticles = ARTICLES.slice(1, 4)
+  const { articles, loading } = useArticlesStore()
+  const featuredArticle = articles[0]
+  const recentArticles = articles.slice(1, 4)
 
   return (
     <div className="pb-24">
-      {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pb-32">
         <div className="absolute inset-0 z-0">
           <img
@@ -52,13 +53,12 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Category Explorer */}
       <section className="container mx-auto px-4 -mt-16 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {CATEGORIES.map((cat, i) => (
             <Link key={cat.name} to={`/categorias?filter=${cat.name}`}>
               <div
-                className={`flex flex-col items-center justify-center p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all cursor-pointer hover:-translate-y-1 shadow-lg animate-fade-in-up`}
+                className="flex flex-col items-center justify-center p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all cursor-pointer hover:-translate-y-1 shadow-lg animate-fade-in-up"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div
@@ -75,7 +75,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Featured Breakdown */}
       <section className="container mx-auto px-4 mt-32">
         <div className="flex items-center justify-between mb-10">
           <h2 className="text-3xl md:text-4xl font-black">Em Destaque</h2>
@@ -87,21 +86,32 @@ export default function Index() {
           </Link>
         </div>
 
-        <div className="mb-12 animate-fade-in-up">
-          <ArticleCard article={featuredArticle} featured />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {recentArticles.map((article, i) => (
-            <div key={article.id} className="animate-fade-in-up">
-              <ArticleCard article={article} index={i} />
+        {loading ? (
+          <div className="space-y-8">
+            <Skeleton className="w-full h-64 md:h-80 rounded-2xl" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[0, 1, 2].map((i) => (
+                <Skeleton key={i} className="w-full h-80 rounded-2xl" />
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <>
+            {featuredArticle && (
+              <div className="mb-12 animate-fade-in-up">
+                <ArticleCard article={featuredArticle} featured />
+              </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {recentArticles.map((article, i) => (
+                <div key={article.id} className="animate-fade-in-up">
+                  <ArticleCard article={article} index={i} />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </section>
     </div>
   )
 }
-
-// Temporary inline Badge component to avoid importing missing one if it was removed in other scopes, though it should exist in shadcn.
-import { Badge } from '@/components/ui/badge'
