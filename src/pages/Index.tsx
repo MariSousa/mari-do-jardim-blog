@@ -95,6 +95,22 @@ export default function Index() {
               ))}
             </div>
           </div>
+        ) : articles.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center animate-fade-in-up">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+              <Leaf className="w-10 h-10 text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3">Nenhum artigo publicado ainda</h3>
+            <p className="text-muted-foreground max-w-md mb-8">
+              O blog está sendo preparado. Em breve, novos conteúdos sobre jardinagem científica
+              aparecerão aqui.
+            </p>
+            <Link to="/categorias">
+              <Button variant="outline" className="rounded-full">
+                Explorar categorias
+              </Button>
+            </Link>
+          </div>
         ) : (
           <>
             {featuredArticle && (
